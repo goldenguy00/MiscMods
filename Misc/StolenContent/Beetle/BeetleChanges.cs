@@ -159,7 +159,7 @@ namespace MiscMods.StolenContent.Beetle
                 burrowTowardsTarget.maxDistance = 60f;
                 burrowTowardsTarget.selectionRequiresTargetLoS = false;
                 burrowTowardsTarget.selectionRequiresOnGround = true;
-                burrowTowardsTarget.moveTargetType = AISkillDriver.TargetType.CurrentEnemy;
+                burrowTowardsTarget.moveTargetType = AISkillDriver.TargetType.NearestFriendlyInSkillRange;
                 burrowTowardsTarget.movementType = AISkillDriver.MovementType.ChaseMoveTarget;
                 burrowTowardsTarget.aimType = AISkillDriver.AimType.AtCurrentEnemy;
 

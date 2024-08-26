@@ -1,7 +1,4 @@
-﻿using System;
-using HarmonyLib;
-using KinematicCharacterController;
-using MonoMod.RuntimeDetour.HookGen;
+﻿using KinematicCharacterController;
 using RoR2;
 using UnityEngine;
 using K = KinematicCharacterController.KinematicCharacterSystem;

@@ -78,7 +78,8 @@ namespace MiscMods.Config
             enableShmoovement = cfg.BindOption(sect,
                 nameof(enableShmoovement),
                 false,
-                "this fucks with physics and tickrate but game runs better", true);
+                "**** YOU MUST ADD ----- KinematicCharacterController.dll ----- TO YOUR MMHOOK CONFIG ****" +
+                "\r\nthis fucks with physics and tickrate but game runs better", true);
 
 
 

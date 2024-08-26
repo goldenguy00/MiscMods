@@ -24,7 +24,7 @@ namespace MiscMods
         public const string PluginGUID = $"com.{PluginAuthor}.{PluginName}";
         public const string PluginAuthor = "score";
         public const string PluginName = "MiscMods";
-        public const string PluginVersion = "1.0.0";
+        public const string PluginVersion = "1.0.1";
 
         public static MiscPlugin Instance { get; private set; }
 
@@ -53,8 +53,11 @@ namespace MiscMods
             if (PluginConfig.enableUnholy.Value)
                 UnholyHooks.Init();
 
+
             if (PluginConfig.enableShmoovement.Value)
+            {
                 Shmoovement.Init();
+            }
 
             HarmonyHooks.Init();
         }
