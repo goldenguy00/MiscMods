@@ -18,12 +18,8 @@ namespace MiscMods.Hooks
         {
             On.KinematicCharacterController.KinematicCharacterSystem.FixedUpdate += KinematicCharacterSystem_FixedUpdate;
             RoR2.Run.onRunStartGlobal += Run_onRunStartGlobal;
-            On.RoR2.Console.CheatsConVar.GetString += (orig, self) => "1";
-            On.RoR2.Console.CheatsConVar.SetString += (orig, self, newVal) => orig(self, "1");
-            HookEndpointManager.Add(AccessTools.PropertyGetter(typeof(RoR2.Console.CheatsConVar), nameof(RoR2.Console.CheatsConVar.boolValue)), GetBool);
-            HookEndpointManager.Add(AccessTools.PropertySetter(typeof(RoR2.Console.CheatsConVar), nameof(RoR2.Console.CheatsConVar.boolValue)), SetBool);
             On.RoR2.CharacterMotor.Awake += CharacterMotor_Awake;
-            On.RoR2.CharacterMotor.BeforeCharacterUpdate += CharacterMotor_BeforeCharacterUpdate;
+            //CharacterMotor.cvCMotorSafeCollisionStepThreshold.value = 1.2f;
         }
 
         private void KinematicCharacterSystem_FixedUpdate(On.KinematicCharacterController.KinematicCharacterSystem.orig_FixedUpdate orig, K self)
@@ -59,7 +55,7 @@ namespace MiscMods.Hooks
                     if (K.InterpolationMethod == CharacterSystemInterpolationMethod.Custom)
                     {
                         K._lastCustomInterpolationStartTime = Time.time;
-                        K._lastCustomInterpolationDeltaTime = Time.smoothDeltaTime;
+                        K._lastCustomInterpolationDeltaTime = Time.fixedDeltaTime;
                     }
 
                     foreach (var motor in K.CharacterMotors)
@@ -77,13 +73,7 @@ namespace MiscMods.Hooks
         {
             Time.fixedDeltaTime = 0.0333f;
             Time.maximumDeltaTime = 0.1f;
-            K.InterpolationMethod = CharacterSystemInterpolationMethod.Custom;
-        }
-
-        private void CharacterMotor_BeforeCharacterUpdate(On.RoR2.CharacterMotor.orig_BeforeCharacterUpdate orig, CharacterMotor self, float deltaTime)
-        {
-            orig(self, deltaTime);
-            self.Motor.SafeMovement = false;
+            K.InterpolationMethod = CharacterSystemInterpolationMethod.Unity;
         }
 
         private void CharacterMotor_Awake(On.RoR2.CharacterMotor.orig_Awake orig, CharacterMotor self)
@@ -94,9 +84,5 @@ namespace MiscMods.Hooks
             self.Motor.StepHandling = StepHandlingMethod.None;
             self.interactiveRigidbodyHandling = false;
         }
-
-        private bool GetBool(Func<RoR2.Console.CheatsConVar, bool> orig, RoR2.Console.CheatsConVar self) => true;
-        private void SetBool(Action<RoR2.Console.CheatsConVar, bool> orig, RoR2.Console.CheatsConVar self, bool newValue) => orig(self, true);
-
     }
 }

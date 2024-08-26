@@ -9,7 +9,6 @@ using RoR2;
 using RoR2.Projectile;
 using UnityEngine;
 using UnityEngine.Networking;
-using static RoR2.Stats.StatManager;
 
 namespace MiscMods.Hooks
 {

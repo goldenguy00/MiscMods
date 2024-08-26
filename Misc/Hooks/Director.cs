@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using MiscMods.Config;
 using RoR2;
 using UnityEngine;
 
@@ -7,16 +8,6 @@ namespace MiscMods.Hooks
 {
     internal class CombatDirector
     {
-        public static float minimumRerollSpawnIntervalMultiplier = 1.65f;
-
-        public static float creditMultiplier = 1.35f;
-
-        public static float eliteBiasMultiplier = 0.9f;
-
-        public static float creditMultiplierForEachMountainShrine = 1.05f;
-
-        public static float goldAndExperienceMultiplierForEachMountainShrine=  0.9f;
-
         public static CombatDirector instance;
 
         public static void Init()
@@ -28,12 +19,16 @@ namespace MiscMods.Hooks
         {
             On.RoR2.CombatDirector.OnEnable += CombatDirector_OnEnable;
             On.RoR2.CombatDirector.OnDisable += CombatDirector_OnDisable;
-            On.RoR2.CombatDirector.Spawn += CombatDirector_Spawn;
+            if (PluginConfig.enableCreditRefund.Value)
+                On.RoR2.CombatDirector.Spawn += CombatDirector_Spawn;
 
             // enemy variety
-            On.RoR2.CombatDirector.Simulate += CombatDirector_Simulate;
-            On.RoR2.Chat.SendBroadcastChat_ChatMessageBase += ChangeMessage;
-            On.RoR2.BossGroup.UpdateBossMemories += UpdateTitle;
+            if (PluginConfig.enableSpawnDiversity.Value)
+            {
+                On.RoR2.CombatDirector.Simulate += CombatDirector_Simulate;
+                On.RoR2.Chat.SendBroadcastChat_ChatMessageBase += ChangeMessage;
+                On.RoR2.BossGroup.UpdateBossMemories += UpdateTitle;
+            }
         }
         private void CombatDirector_Simulate(On.RoR2.CombatDirector.orig_Simulate orig, RoR2.CombatDirector self, float deltaTime)
         {
@@ -114,27 +109,27 @@ namespace MiscMods.Hooks
 
         private void CombatDirector_OnDisable(On.RoR2.CombatDirector.orig_OnDisable orig, RoR2.CombatDirector self)
         {
-            self.minRerollSpawnInterval *= minimumRerollSpawnIntervalMultiplier;
-            self.maxRerollSpawnInterval *= minimumRerollSpawnIntervalMultiplier;
+            self.minRerollSpawnInterval *= PluginConfig.minimumRerollSpawnIntervalMultiplier.Value;
+            self.maxRerollSpawnInterval *= PluginConfig.maximumRerollSpawnIntervalMultiplier.Value;
             orig(self);
         }
 
         private void CombatDirector_OnEnable(On.RoR2.CombatDirector.orig_OnEnable orig, RoR2.CombatDirector self)
         {
-            self.maximumNumberToSpawnBeforeSkipping = 4;
-            self.maxConsecutiveCheapSkips = 4;
-            self.minRerollSpawnInterval /= minimumRerollSpawnIntervalMultiplier;
-            self.maxRerollSpawnInterval /= minimumRerollSpawnIntervalMultiplier;
-            self.creditMultiplier *= creditMultiplier;
-            self.eliteBias *= eliteBiasMultiplier;
-            var teleporter = TeleporterInteraction.instance;
-            if (teleporter != null)
+            self.maximumNumberToSpawnBeforeSkipping = PluginConfig.maximumNumberToSpawnBeforeSkipping.Value;
+            self.maxConsecutiveCheapSkips = PluginConfig.maxConsecutiveCheapSkips.Value;
+            self.minRerollSpawnInterval /= PluginConfig.minimumRerollSpawnIntervalMultiplier.Value;
+            self.maxRerollSpawnInterval /= PluginConfig.maximumRerollSpawnIntervalMultiplier.Value;
+            self.creditMultiplier *= PluginConfig.creditMultiplier.Value;
+            self.eliteBias *= PluginConfig.eliteBiasMultiplier.Value;
+
+            if (TeleporterInteraction.instance != null)
             {
-                for (var i = 0; i < teleporter.shrineBonusStacks; i++)
+                for (var i = 0; i < TeleporterInteraction.instance.shrineBonusStacks; i++)
                 {
-                    self.creditMultiplier *= creditMultiplierForEachMountainShrine;// * Mathf.Pow(Run.instance.participatingPlayerCount, 0.05f);
-                    self.expRewardCoefficient *= goldAndExperienceMultiplierForEachMountainShrine;
-                    self.goldRewardCoefficient *= goldAndExperienceMultiplierForEachMountainShrine;
+                    self.creditMultiplier *= PluginConfig.creditMultiplierForEachMountainShrine.Value;// * Mathf.Pow(Run.instance.participatingPlayerCount, 0.05f);
+                    self.expRewardCoefficient *= PluginConfig.goldAndExperienceMultiplierForEachMountainShrine.Value;
+                    self.goldRewardCoefficient *= PluginConfig.goldAndExperienceMultiplierForEachMountainShrine.Value;
                 }
             }
             orig(self);

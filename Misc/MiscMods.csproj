@@ -18,18 +18,32 @@
   <ItemGroup>
     <Compile Remove="libs\**" />
     <Compile Remove="Managed\**" />
+    <Compile Remove="StolenContent\**" />
     <EmbeddedResource Remove="libs\**" />
     <EmbeddedResource Remove="Managed\**" />
+    <EmbeddedResource Remove="StolenContent\**" />
     <None Remove="libs\**" />
     <None Remove="Managed\**" />
+    <None Remove="StolenContent\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Assets\riskyartifactsbundle" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Assets\riskyartifactsbundle" />
+    <Compile Include="StolenContent\Beetle\BeetleBurrow.cs" />
+    <Compile Include="StolenContent\Beetle\EnterBurrow.cs" />
+    <Compile Include="StolenContent\Beetle\ExitBurrow.cs" />
+    <Compile Include="StolenContent\Beetle\BeetleChanges.cs" />
+    <Compile Include="StolenContent\Cruelty.cs" />
+    <Compile Include="StolenContent\Donger\BellChanges.cs" />
+    <Compile Include="StolenContent\Beetle\BeetleSpit.cs" />
+    <Compile Include="StolenContent\Donger\BuffBeamPlus.cs" />
+    <Compile Include="StolenContent\Beetle\RallyCry.cs" />
+    <Compile Include="StolenContent\Imp\ImpChanges.cs" />
+    <Compile Include="StolenContent\Imp\ImpVoidSpike.cs" />
+    <Compile Include="StolenContent\Lemur\LemurChanges.cs" />
+    <Compile Include="StolenContent\Lunar\LunarChanges.cs" />
+    <Compile Include="StolenContent\Lunar\NuxHelfireEffectController.cs" />
+    <Compile Include="StolenContent\Wisp\WispChanges.cs" />
+    <Compile Include="StolenContent\Worm\WormChanges.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +53,7 @@
     </PackageReference>
     <PackageReference Include="BepInEx.Core" Version="5.4.21" />
     <PackageReference Include="R2API" Version="5.0.5" />
+    <PackageReference Include="Rune580.Mods.RiskOfRain2.RiskOfOptions" Version="2.8.0" />
     <PackageReference Include="UnityEngine.Modules" Version="2019.4.37" />
     <PackageReference Include="MMHOOK.RoR2" Version="2024.5.24">
       <NoWarn>NU1701</NoWarn>
@@ -46,18 +61,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Dronemeld">
-      <HintPath>libs\Dronemeld-nstrip.dll</HintPath>
-    </Reference>
-    <Reference Include="EnemiesPlus">
-      <HintPath>Ref\EnemiesPlus.dll</HintPath>
-    </Reference>
     <Reference Include="Facepunch.Steamworks">
       <HintPath>libs\Facepunch.Steamworks.dll</HintPath>
       <Private>false</Private>
-    </Reference>
-    <Reference Include="HunkMod">
-      <HintPath>Ref\HunkMod.dll</HintPath>
     </Reference>
     <Reference Include="KdTreeLib">
       <HintPath>libs\KdTreeLib.dll</HintPath>
@@ -113,8 +119,8 @@
     </Reference>
   </ItemGroup>
 
-	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)Release\$(TargetName).dll&quot;&#xD;&#xA;if exist $(SolutionDir)Release\Release.zip ( Del $(SolutionDir)Release\Release.zip)&#xD;&#xA;powershell Compress-Archive -Path '$(SolutionDir)Release\*.*' -DestinationPath '$(SolutionDir)Release\Release.zip' -Force" />
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="$(ConfigurationName) == Release">
+		<Exec Command="copy /Y &quot;$(TargetDir)$(TargetName).dll&quot; &quot;$(SolutionDir)Release\$(TargetName).dll&quot;&#xD;&#xA;if exist &quot;$(SolutionDir)Release\Release.zip&quot; ( Del &quot;$(SolutionDir)Release\Release.zip&quot;)&#xD;&#xA;powershell Compress-Archive -Path '$(SolutionDir)Release\*.*' -DestinationPath '$(SolutionDir)Release\Release.zip' -Force" />
 	</Target>
 
 </Project>
