@@ -22,7 +22,7 @@ namespace MiscMods.Hooks
         public static void Init()
         {
             Patcher = new Harmony(MiscPlugin.PluginGUID);
-            if (PluginConfig.enableEnemiesPlus.Value && MiscPlugin.LeagueOfLiteralGays && !MiscPlugin.WRBInstalled)
+            if (PluginConfig.enableEnemiesPlus.Value && MiscPlugin.LeagueOfLiteralGays)
             {
                 League();
             }

@@ -14,7 +14,6 @@ using MiscMods.StolenContent;
 namespace MiscMods
 {
     [BepInDependency("com.phreel.TitansOfTheRiftSOTV", BepInDependency.DependencyFlags.SoftDependency)]
-    [BepInDependency("com.rob.Hunk", BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency("com.rune580.riskofoptions", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("com.TeamMoonstorm.MoonstormSharedUtils", BepInDependency.DependencyFlags.SoftDependency)]
 
@@ -30,9 +29,7 @@ namespace MiscMods
         public static MiscPlugin Instance { get; private set; }
 
         public static bool LeagueOfLiteralGays => Chainloader.PluginInfos.ContainsKey("com.phreel.TitansOfTheRiftSOTV");
-        public static bool HunkInstalled => Chainloader.PluginInfos.ContainsKey("com.rob.Hunk");
         public static bool MSUInstalled => Chainloader.PluginInfos.ContainsKey("com.TeamMoonstorm.MoonstormSharedUtils");
-        public static bool WRBInstalled => Chainloader.PluginInfos.ContainsKey("BALLS.WellRoundedBalance");
 
         public void Awake()
         {
